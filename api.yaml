@@ -1,0 +1,188 @@
+swagger: "2.0"
+info :
+    title : "Swagger My Api"
+    description : This is my Company Documentation made bt be
+    vresion : "1.0"
+    contact : 
+      email : "ketansali.vision@gmail.com"
+    liscence : 
+      name : "Apache 2.0"
+      url : "http://apache.org/"
+    servers:
+      -url : "http://localhost:4000/"
+      description : "This is My Local Server"
+      -url : "http://localhost:4000/"
+      description : "This is My Company Server"
+
+schemes : [http,https]
+
+paths: 
+#Return String
+  /string:
+    get : 
+      summary : Return String
+      description : It Just Return Fake String
+      responses : 
+        200:
+          description : Success
+          schema :
+            type : string
+            example : "A Fake String"
+        400:
+          description : User Error
+        500:
+          description : Internal server Error
+
+#Return Objcet
+  /user:
+    get:
+      summary : Return Object
+      description : It is Return Fake object
+      responses:
+        200:
+          description : Success
+          schema :
+            type : object
+            properties : 
+              id:
+                type : integer
+              name : 
+                type : string
+            example : "A Fake Object"
+        400:
+          description : User Error
+        500:
+          description : Internal server Error
+
+#Return Array of user
+  /users:
+    get:
+      summary : Return Array of users
+      description : Array Return
+      responses:
+        200:
+          description : Success
+          schema :
+            type : array
+            items : 
+              type : object
+              properties : 
+              id:
+                type : integer
+              name : 
+                type : string
+
+#Sending/Reading data throght path
+  /users/{userId}:
+    get:
+      summary : Return Array of users
+      description : Array Return
+      parameters:
+        - name : userId
+          in: path
+          required: true
+          schema:
+           type : integer
+      responses:
+        200:
+          description : Success
+
+#Post json/body
+  # /create:
+  #   post:
+  #     summary : Posting Data
+  #     produces : 
+  #       - application/json
+  #     consumes :
+  #       - application/json
+  #     parameters:
+  #     - in: body
+  #       name: user
+  #       schema:
+  #         type: object
+  #         proparties:
+  #           id:
+  #             type: integer
+  #           name:
+  #             type: string
+  #         example: 
+  #           id: integer
+  #           name: string
+              
+  #     responses:
+  #       200:
+  #         description: OK
+
+
+#Schema with Defination
+  /create:
+    post:
+      summary : Posting Data
+      produces : 
+        - application/json
+      consumes :
+        - application/json
+      parameters:
+      - in: body
+        name: user
+        schema:
+         $ref: "#/components/schemas/User"
+              
+      responses:
+        200:
+          description: OK
+
+
+
+#Query
+  /usersQuery:
+    get:
+      parameters:
+        - in: query
+          name: id
+          type: integer
+          enum: [1,2,3]
+        - in: query
+          name: age
+          type: integer
+      responses:
+        200:
+          description: OK
+
+#File upload
+  /upload:
+    post:
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: file
+          type: file
+          required: true
+          description: File Upload
+        - in: formData
+          name: id
+          type: integer
+          description: ID of Integer
+        - in: header
+          name: auth
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          required: true
+        name:
+          type: string
+
+
+
